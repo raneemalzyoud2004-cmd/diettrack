@@ -73,17 +73,7 @@
 
 
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 wow fadeIn" data-wow-delay="0.1s">
-        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-<h1 class="m-0 text-primary"><i class="fas fa-apple-alt me-3"></i>DietTrack</h1>        </a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-
-            <a href="" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Appointment<i class="fa fa-arrow-right ms-3"></i></a>
-        </div>
-    </nav>
+    <div data-include="navbar"></div>
     <!-- Navbar End -->
 
 
@@ -132,41 +122,46 @@
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="bg-light rounded h-100 d-flex align-items-center p-5">
-                        <form>
+                        <form action="appointment_submit.php" method="post">
                             <div class="row g-3">
-                                <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control border-0" placeholder="Your Name" style="height: 55px;">
+                                <div class="col-12">
+                                    <div id="appointmentFeedback"></div>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <input type="email" class="form-control border-0" placeholder="Your Email" style="height: 55px;">
+                                    <input type="text" name="full_name" class="form-control border-0" placeholder="Your Name" style="height: 55px;" required>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control border-0" placeholder="Your Mobile" style="height: 55px;">
+                                    <input type="email" name="email" class="form-control border-0" placeholder="Your Email" style="height: 55px;" required>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <select class="form-select border-0" style="height: 55px;">
-                                        <option selected>Choose Doctor</option>
-                                        <option value="1">Doctor 1</option>
-                                        <option value="2">Doctor 2</option>
-                                        <option value="3">Doctor 3</option>
+                                    <input type="text" name="phone_number" class="form-control border-0" placeholder="Your Mobile" style="height: 55px;" required>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <select name="doctor_name" class="form-select border-0" style="height: 55px;" required>
+                                        <option value="" selected>Choose Doctor</option>
+                                        <option value="Doctor 1">Doctor 1</option>
+                                        <option value="Doctor 2">Doctor 2</option>
+                                        <option value="Doctor 3">Doctor 3</option>
                                     </select>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <div class="date" id="date" data-target-input="nearest">
                                         <input type="text"
+                                            name="appointment_date"
                                             class="form-control border-0 datetimepicker-input"
-                                            placeholder="Choose Date" data-target="#date" data-toggle="datetimepicker" style="height: 55px;">
+                                            placeholder="Choose Date" data-target="#date" data-toggle="datetimepicker" style="height: 55px;" required>
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <div class="time" id="time" data-target-input="nearest">
                                         <input type="text"
+                                            name="appointment_time"
                                             class="form-control border-0 datetimepicker-input"
-                                            placeholder="Choose Date" data-target="#time" data-toggle="datetimepicker" style="height: 55px;">
+                                            placeholder="Choose Time" data-target="#time" data-toggle="datetimepicker" style="height: 55px;" required>
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <textarea class="form-control border-0" rows="5" placeholder="Describe your problem"></textarea>
+                                    <textarea name="notes" class="form-control border-0" rows="5" placeholder="Describe your problem"></textarea>
                                 </div>
                                 <div class="col-12">
                                     <button class="btn btn-primary w-100 py-3" type="submit">Book Appointment</button>
@@ -258,6 +253,24 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script src="js/navbar-loader.js"></script>
+    <script>
+        (function () {
+            var params = new URLSearchParams(window.location.search);
+            var status = params.get('status');
+            var feedback = document.getElementById('appointmentFeedback');
+            if (!feedback) {
+                return;
+            }
+            if (status === 'success') {
+                feedback.innerHTML = '<div class="alert alert-success">Your appointment has been booked successfully.</div>';
+            } else if (status === 'error') {
+                feedback.innerHTML = '<div class="alert alert-danger">Could not save appointment. Please try again.</div>';
+            } else if (status === 'invalid') {
+                feedback.innerHTML = '<div class="alert alert-warning">Please fill all required appointment fields.</div>';
+            }
+        })();
+    </script>
 </body>
 
 </html>
