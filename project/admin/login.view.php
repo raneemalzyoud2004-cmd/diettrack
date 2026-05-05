@@ -58,7 +58,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary w-100 py-3">Login</button>
                     </form>
-                    <p class="text-muted small mt-3 mb-0">Default: admin / admin123</p>
+                   
                 </div>
             </div>
         </div>
